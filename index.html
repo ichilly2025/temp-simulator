@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>温度模拟器 - 实时温度波形图</title>
+    <meta name="description" content="一个显示温度波形图的前端项目，使用模拟数据，通过红黄绿色表示不同的温度警告级别">
+    <link rel="stylesheet" href="app.css">
+    <!-- 引入Chart.js库用于绘制波形图 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🌡️ 温度模拟器</h1>
+            <p class="subtitle">实时温度监控与波形图展示</p>
+        </header>
+
+        <main class="main-content">
+            <section class="dashboard">
+                <div class="dashboard-header">
+                    <h2>温度波形图</h2>
+                    <div class="controls">
+                        <button id="startBtn" class="btn btn-primary">开始模拟</button>
+                        <button id="pauseBtn" class="btn btn-secondary">暂停模拟</button>
+                        <button id="resetBtn" class="btn btn-warning">重置数据</button>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <!-- 图表画布容器 -->
+                    <canvas id="temperatureChart"></canvas>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="legend-color safe"></span>
+                        <span class="legend-label">安全温度 (&lt; 30°C)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color warning"></span>
+                        <span class="legend-label">警告温度 (30-35°C)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color danger"></span>
+                        <span class="legend-label">危险温度 (&gt; 35°C)</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stats">
+                <div class="stat-card">
+                    <h3>当前温度</h3>
+                    <div class="stat-value" id="currentTemp">-- °C</div>
+                    <div class="stat-status" id="currentStatus">--</div>
+                </div>
+                <div class="stat-card">
+                    <h3>最高温度</h3>
+                    <div class="stat-value" id="maxTemp">-- °C</div>
+                    <div class="stat-time" id="maxTempTime">--</div>
+                </div>
+                <div class="stat-card">
+                    <h3>最低温度</h3>
+                    <div class="stat-value" id="minTemp">-- °C</div>
+                    <div class="stat-time" id="minTempTime">--</div>
+                </div>
+                <div class="stat-card">
+                    <h3>平均温度</h3>
+                    <div class="stat-value" id="avgTemp">-- °C</div>
+                    <div class="stat-trend" id="tempTrend">--</div>
+                </div>
+            </section>
+
+            <section class="info">
+                <h3>温度警告级别说明</h3>
+                <div class="info-content">
+                    <p>本系统根据温度值将状态分为三个级别：</p>
+                    <ul>
+                        <li><strong>绿色（安全）</strong>：温度低于30°C，属于正常范围</li>
+                        <li><strong>黄色（警告）</strong>：温度在30°C至35°C之间，需要注意温度变化</li>
+                        <li><strong>红色（危险）</strong>：温度高于35°C，需要立即采取措施</li>
+                    </ul>
+                    <p>温度数据每2秒更新一次，波形图显示最近60个数据点（约2分钟的数据）。</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>温度模拟器 v1.0.0 | 使用模拟数据 | 最后更新: <span id="currentDate"></span></p>
+        </footer>
+    </div>
+
+    <!-- 加载JavaScript文件 -->
+    <script src="app.js"></script>
+    
+    <!-- 页面加载完成后初始化日期 -->
+    <script>
+        // 显示当前日期
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-CN', options);
+        });
+    </script>
+</body>
+</html>
